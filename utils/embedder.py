@@ -1,0 +1,28 @@
+from sentence_transformers import SentenceTransformer
+
+
+class Embedder:
+
+    def __init__(self):
+        print("Loading Qwen3-Embedding-0.6B...")
+
+        self.model = SentenceTransformer(
+            "Qwen/Qwen3-Embedding-0.6B"
+        )
+
+        print("Model loaded.")
+
+    def embed_documents(self, texts: list[str]):
+        return self.model.encode(
+            texts,
+            normalize_embeddings=True,
+            batch_size=16,
+            show_progress_bar=True,
+        )
+
+    def embed_query(self, query: str):
+        return self.model.encode(
+            query,
+            prompt_name="query",
+            normalize_embeddings=True,
+        )
