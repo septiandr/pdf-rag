@@ -38,7 +38,7 @@ def load_and_chunk_pdf_files(folder_path: Path):
         return chunks
 
     # Buat document objects dari sections
-    from langchain.schema import Document
+    from langchain_core.documents import Document
     chunks = []
     for section in sections:
         # Skip section terlalu pendek
