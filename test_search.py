@@ -25,13 +25,32 @@ test_queries = [
 ]
 
 for query in test_queries:
-    print(f"\n{'='*50}")
-    print(f"Query: \"{query}\"")
-    print(f"{'='*50}")
+    print(f"\n{'='*60}")
+    print(f"🔍 Query: \"{query}\"")
+    print(f"{'='*60}")
 
     results = searcher.search(query, top_k=3)
 
     for i, r in enumerate(results, 1):
-        print(f"\n{i}. Score: {r['score']:.4f}")
-        print(f"   Cosine: {r['cosine_score']:.4f} | Keyword: {r['keyword_ratio']:.2f}")
-        print(f"   {r['text'][:150]}...")
+        # Bersihkan teks
+        text = r["text"].replace("\n", " ").strip()
+        text = " ".join(text.split())
+
+        # Ambil potongan yang relevan
+        if len(text) > 300:
+            text = text[:300] + "..."
+
+        # Deteksi pasal
+        pasal = ""
+        for line in r["text"].split("\n"):
+            if "Pasal" in line:
+                pasal = line.strip()
+                break
+
+        print(f"\n{'─' * 60}")
+        print(f"📄 Hasil #{i}")
+        if pasal:
+            print(f"📌 {pasal}")
+        print(f"   {text}")
+        print(f"   ")
+        print(f"   Skor relevansi: {r['score']:.0%}")

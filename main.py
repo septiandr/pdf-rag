@@ -62,11 +62,31 @@ while True:
 
     results = searcher.search(query, top_k=3)
 
-    print(f"\nHasil pencarian untuk: \"{query}\"")
-    print("-" * 50)
+    print(f"\n🔍 Hasil pencarian untuk: \"{query}\"")
+    print("=" * 60)
 
     for i, r in enumerate(results, 1):
-        print(f"\n{i}. Score: {r['score']:.4f}")
-        print(f"   {r['text'][:200]}...")
+        # Bersihkan teks
+        text = r["text"].replace("\n", " ").strip()
+        text = " ".join(text.split())  # Hapus spasi berlebih
+        
+                # Ambil potongan yang relevan
+        if len(text) > 300:
+            text = text[:300] + "..."
 
-    print()
+        # Deteksi pasal
+        pasal = ""
+        for line in r["text"].split("\n"):
+            if "Pasal" in line:
+                pasal = line.strip()
+                break
+
+        print(f"\n{'─' * 60}")
+        print(f"📄 Hasil #{i}")
+        if pasal:
+            print(f"📌 {pasal}")
+        print(f"   {text}")
+        print(f"   ")
+        print(f"   Skor relevansi: {r['score']:.0%}")
+
+    print(f"{'=' * 60}\n")
